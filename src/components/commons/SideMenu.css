@@ -1,0 +1,8 @@
+
+#nav a {
+    @apply w-full px-2 inline-flex space-x-2 items-center text-colortextosubtitulos transition ease-linear duration-150;
+  }
+  
+  #nav a.active {
+    @apply  bg-coloracento text-colorsecundario;
+  }
