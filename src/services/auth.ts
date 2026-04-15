@@ -3,8 +3,8 @@ import { Login} from "@/types";
 import useAuthStore from "@/store/authStore";
 import api from "./axios";
 
-const REGISTER_URL = import.meta.env.VITE_API_URL + import.meta.env.VITE_REGISTER
-const UPDATER = import.meta.env.VITE_API_URL + import.meta.env.VITE_UPDATER
+const REGISTER_URL = import.meta.env.VITE_REGISTER
+const UPDATER = import.meta.env.VITE_UPDATER
 
 export const login = async (user: Login) => {
 
