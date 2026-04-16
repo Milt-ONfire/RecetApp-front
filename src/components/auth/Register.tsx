@@ -6,6 +6,7 @@ import { ResponseErrorMessage, UserRegisterResponse } from '@/models';
 import { register } from '@/services/auth';
 import axios from 'axios';
 import { useState } from 'react';
+import GoogleButton from './GoogleButtonRegister';
 
 interface InputValues {
     value: string;
@@ -18,7 +19,7 @@ type InputTypes =
     | "Password"
     | "confirmPassword"
 
-type FormValues = Record<InputTypes, InputValues>
+export type FormValues = Record<InputTypes, InputValues>
 
 
 const defaultValue: InputValues = {
@@ -95,10 +96,10 @@ const Register = () => {
 
         const user = new FormData();
 
-        user.append("NombreUsuario",form.NombreUsuario.value)
-        user.append("Email",form.Email.value)
-        user.append("Password",form.Password.value)
-        user.append("confirmPassword",form.confirmPassword.value)
+        user.append("NombreUsuario", form.NombreUsuario.value)
+        user.append("Email", form.Email.value)
+        user.append("Password", form.Password.value)
+        user.append("confirmPassword", form.confirmPassword.value)
 
         try {
             setIsLoading(true);
@@ -138,8 +139,8 @@ const Register = () => {
 
 
     return (
-        <div className="w-screen h-max py-1 items-center flex">
-            <div className="w-3/4 h-auto flex-shrink-0 bg-card_background mx-auto max-w-[500px] shadow-md items-center rounded-md">
+        <div className="w-screen h-max py-1 items-center justify-center gap-8 flex flex-col">
+            <div className="w-2/3 h-auto flex-shrink-0 bg-card_background max-w-[500px] shadow-md items-center rounded-md">
                 <div className="m-0 flex h-min justify-end">
                     <img src={dottedShape} className="w-16 h-16 top-0 right-0 " />
                 </div>
@@ -193,6 +194,9 @@ const Register = () => {
                 <div className="flex m-0 justify-start items-end">
                     <img src={dottedShape} className="w-auto h-auto bottom-0 left-0 rotate-180" />
                 </div>
+            </div>
+            <div className='w-1/3 bg-card_background'>
+                <GoogleButton setForm={setForm} onSubmit={onSubmit} />
             </div>
         </div>
     )

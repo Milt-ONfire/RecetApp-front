@@ -22,7 +22,7 @@ import Personalized from './components/recipes/Personalized'
 import Categories from './components/recipes/Categories'
 import Contacto from './components/contacto/Contacto'
 import Detail from './views/Detail'
-import { ProtectedRoute } from './components/auth/ProtectedRoutes'
+// import { ProtectedRoute } from './components/auth/ProtectedRoutes'
 import ResetPassword from './components/auth/ResetPassword'
 
 
