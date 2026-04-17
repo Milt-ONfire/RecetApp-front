@@ -1,5 +1,5 @@
 // import axios from "axios";
-import { Login} from "@/types";
+import { Login, Register} from "@/types";
 import useAuthStore from "@/store/authStore";
 import api from "./axios";
 
@@ -20,7 +20,7 @@ export const login = async (user: Login) => {
   }
 };
 
-export const register = async (user: FormData) => {
+export const register = async (user: Register) => {
   try {
     const res = await api.post(REGISTER_URL, user);
     return res;

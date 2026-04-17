@@ -91,15 +91,21 @@ const Register = () => {
         return true;
     }
 
-    const onSubmit = async () => {
-        if (!passwordsAreEqual()) return;
+    const onSubmit = async (overrideData?:any) => {
 
-        const user = new FormData();
+        if (!overrideData?.token && !passwordsAreEqual()) return;
+        const user = {
+            username: overrideData?.username ?? form.NombreUsuario.value,            
+            email: overrideData?.email ?? form.Email.value, 
+            password: overrideData?.password ?? form.Password.value,
+            token: overrideData?.token ?? ""
+        }
 
-        user.append("NombreUsuario", form.NombreUsuario.value)
-        user.append("Email", form.Email.value)
-        user.append("Password", form.Password.value)
-        user.append("confirmPassword", form.confirmPassword.value)
+        console.log("ARGUMENTS 👉", overrideData);
+console.log("CALL STACK 👉", new Error().stack);
+
+        console.log("FINAL USER 👉", user);
+        console.log("REQUEST PAYLOAD 👉", JSON.stringify(user, null, 2));
 
         try {
             setIsLoading(true);
