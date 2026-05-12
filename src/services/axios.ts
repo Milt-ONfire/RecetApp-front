@@ -13,12 +13,10 @@ api.interceptors.request.use(
 
     console.log("interceptor ejecutado");
     const token = useAuthStore.getState().token;
-    console.log('TOKEN ACTUAL:', token);
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
     console.log("CONFIG HEADERS:", config.headers);
-    console.log("CONFIG:", config);
     return config;
   },
   (error) => {
@@ -33,8 +31,8 @@ api.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401) {
       const logout = useAuthStore.getState().logout;
-      // logout();
-      // window.location.href = '/login';
+      logout();
+      window.location.href = '/login';
     }
     return Promise.reject(error);
   }

@@ -1,13 +1,14 @@
 import { recipesList } from "./datatemp";
 import { Recipe, RecipeApi } from "@/types";
 import api from "./axios";
-import { IRecetItem, IRecetSaved } from "@/models";
+import { IRecetSaved } from "@/models";
 
-const RECIPES_URL = import.meta.env.VITE_RECIPES ;
+const RECIPES_URL = import.meta.env.VITE_RECIPES;
 const SAVE_RECIPES_URL = import.meta.env.VITE_SAVER_RECIPES;
 const RECIPES_FOUND_URL = import.meta.env.VITE_INGREDIENTS_FOUNDED;
 const CHECK_SAVED_BY_USER = import.meta.env.VITE_CHECKER_RECIPES;
 const GET_SAVED_RECIPES = import.meta.env.VITE_GET_RECIPES_SAVED;
+const ADD_NEW_RECIPE = import.meta.env.VITE_ADD_RECIPE;
 
 export const getAllRecipes = async (page: number | undefined): Promise<Recipe[]> => {
   try {
@@ -23,12 +24,17 @@ export const getAllRecipes = async (page: number | undefined): Promise<Recipe[]>
       recetaIngredientes: r.recetaIngredientes,
       recetaGuardada: r.recetaGuardada
     }))
-    
 
-    if (page !== undefined) {
-      const end = 8 + page * 4
-      return mapped.slice(0, end)
-    } return mapped.slice(0, 8)
+
+    // if (page !== undefined) {
+      const pageSize = data.length;
+      const start = (page ?? 0) * pageSize;
+      const end = start + pageSize;
+
+      return mapped.slice(start, end);
+      // const end = 8 + page * 4
+      // return mapped.slice(0, end)
+    // } return mapped.slice(0, 8)
   } catch (error) {
     console.log(error);
     return [];
@@ -49,35 +55,36 @@ export const getUserRecipes = (page: number | undefined) => {
 
 export const getByIngredients = async (page: number | undefined, ingredients: number[] | undefined): Promise<Recipe[]> => {
   try {
-    const recipesFound = await api.post<RecipeApi[]>(RECIPES_FOUND_URL,ingredients)
+    const recipesFound = await api.post<RecipeApi[]>(RECIPES_FOUND_URL, ingredients)
     const data = recipesFound.data
     console.log("recetas por ingrediente", data);
-    const mapped = data.map((r) =>({
+    const mapped = data.map((r) => ({
       id: r.idReceta,
       title: r.nombreReceta,
       description: r.descripcion,
       image: r.imagen,
       categoryId: r.idCategoria,
       recetaIngredientes: r.recetaIngredientes,
-      recetaGuardada: r.recetaGuardada  
+      recetaGuardada: r.recetaGuardada
     }))
     if (page !== undefined) {
       const end = 8 + page * 4
-      return mapped.slice(0, end)  
-    }else return mapped.slice(0,8)    
+      return mapped.slice(0, end)
+    } else return mapped.slice(0, 8)
   } catch (error) {
-    console.log(error);  
+    console.log(error);
     return [];
   }
 };
 
-export const addRecipe = async (recipe: {
-  title: string;
-  description: string;
-  userId: string;
-}) => {
+export const addRecipe = async (recipe: FormData) => {
   try {
-    await api.post(RECIPES_URL, recipe);
+    const res = await api.post(ADD_NEW_RECIPE, recipe, {
+      headers: {
+        "Content-Type": "multipart/form-data"
+      }
+    });
+    return res;
   } catch (error) {
     console.log(error);
   }
@@ -94,26 +101,26 @@ export const updateRecipe = async (recipe: {
   } catch (error) {
     console.log(error);
   }
-} 
+}
 
-export const addRecipeToSaved = async (recipeToSave : IRecetSaved | undefined) => {
+export const addRecipeToSaved = async (recipeToSave: IRecetSaved | undefined) => {
   try {
     console.log("BASE URL:", import.meta.env.VITE_OUR_API_URL);
     await api.post(SAVE_RECIPES_URL, recipeToSave)
   } catch (error) {
-    console.log(error);   
+    console.log(error);
   }
 }
 
-export const getSavedRecipeByIdUser = async (idRecipe : number) => {
+export const getSavedRecipeByIdUser = async (idRecipe: number) => {
   try {
-   const data = await api.post(CHECK_SAVED_BY_USER, idRecipe,
+    const data = await api.post(CHECK_SAVED_BY_USER, idRecipe,
       {
         headers: {
           "Content-Type": "application/json"
         }
       })
-   return data.data
+    return data.data
   } catch (error) {
     console.log(error);
   }
@@ -122,14 +129,14 @@ export const getSavedRecipeByIdUser = async (idRecipe : number) => {
 export const getSavedRecipesByUser = async (): Promise<Recipe[]> => {
   try {
     const recetasGuardadas = await api.get<RecipeApi[]>(GET_SAVED_RECIPES)
-    const mapped = recetasGuardadas.data.map((r) =>({
+    const mapped = recetasGuardadas.data.map((r) => ({
       id: r.idReceta,
       title: r.nombreReceta,
       description: r.descripcion,
       image: r.imagen,
       categoryId: r.idCategoria,
       recetaIngredientes: r.recetaIngredientes,
-      recetaGuardada: r.recetaGuardada  
+      recetaGuardada: r.recetaGuardada
     }))
     return mapped;
   } catch (error) {

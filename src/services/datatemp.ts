@@ -12,21 +12,25 @@ export const categoriesList = [
     image: '/assets/gluten-free.svg'
   },
   {
-    name: "Paleo", id: 4,
+    name: "Comida rápida", id: 4,
     image: '/assets/paleo.svg'
   },
   {
-    name: "Cetogénica (Keto)", id: 5,
-    image: '/assets/cetogenica.svg'
+    name: "Sopas", id: 5,
+    image: '/assets/sopa.png'
   },
   {
     name: "Mediterránea", id: 7,
     image: '/assets/mediterranean.svg'
   },
   {
-    name: "Raw", id: 8,
-    image: '/assets/raw.svg'
+    name: "Bebidas", id: 8,
+    image: '/assets/bebida.png'
   },
+  {
+    name: "Ensalada", id: 9,
+    image:'/assets/ensalada.png'
+  }
 ]
 
 export const recipesList = [

@@ -24,6 +24,7 @@ import Contacto from './components/contacto/Contacto'
 import Detail from './views/Detail'
 // import { ProtectedRoute } from './components/auth/ProtectedRoutes'
 import ResetPassword from './components/auth/ResetPassword'
+import RecipeForm from './components/recipes/CreateForm'
 
 
 function App() {
@@ -106,6 +107,10 @@ function App() {
         {
           path: 'detail/:id',
           element: <Detail/>
+        },
+        {
+          path: 'create',
+          element: <RecipeForm/>
         }
       ]
     }

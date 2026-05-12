@@ -1,5 +1,6 @@
 import { Recipe } from "@/types";
-import Card from "./Card";
+import Card from "../recipes/Card";
+
 
 export default function Recipes({ recipes }: { recipes: Recipe[] }) {
   return (

@@ -25,7 +25,7 @@ export type Register = {
 export type Category = {
   id: number,
   name: string,
-  image: string
+  image?: string
 }
 
 export type RecetaIngrediente = {
@@ -57,6 +57,8 @@ export type Ingrediente = {
   id: number,
   name: string,
   unidadMedida: string | null,
+  cantidad?: number,
+  isCustom?: boolean
 }
 
 export type AddRating = {
@@ -65,3 +67,19 @@ export type AddRating = {
   comentario: string,
   rating: number
 }
+
+export interface RecipeFormData {
+  name: string;
+  description: string;
+  categoryId: string;
+  ingredients: Ingrediente[];
+  images: RecipeImage | null;
+}
+
+export interface RecipeImage {
+  id: string;
+  url: string;
+  file: File;
+}
+ 
+ 

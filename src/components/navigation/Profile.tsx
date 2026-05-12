@@ -4,10 +4,10 @@ import { defaultUserImage, ERROR_RESPONSE } from "@/constants";
 import useAuthStore from "@/store/authStore";
 import Button from "../Button";
 import Input from "../Input";
-import TextArea from "../TextArea";
 import axios from "axios";
 import { getCurrentUser } from "@/services/auth";
 import api from "@/services/axios";
+import TextArea from "../TextArea";
 
 const defaultValues: User = {
   description: null,

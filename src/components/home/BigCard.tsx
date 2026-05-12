@@ -1,6 +1,8 @@
+import { useNavigate } from "react-router-dom";
 import Button from "../Button";
 
 export default function BigCard() {
+  const navigate = useNavigate();
   return (
     <div className="flex flex-col-reverse sm:flex-row mx-10 lg:mx-40 shadow-custom bg-secondary50">
       <img src="/assets/bigcard-image.png" alt="bigcard image" className="size-[280px] lg:size-[350px] min-[1300px]:size-[500px] mx-auto" />
@@ -11,7 +13,7 @@ export default function BigCard() {
           Inspira a otros con tus sabores, guarda tus platos favoritos y 
           convierte cada idea en una experiencia deliciosa dentro de la app.
         </p>
-        <Button type="filled" className="bg-primary" onClick={() => {}}>
+        <Button type="filled" className="bg-primary" onClick={() => navigate("/recipes/create")}>
           Hacer receta
         </Button>
       </div>
