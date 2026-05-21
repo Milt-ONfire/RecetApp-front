@@ -69,8 +69,16 @@ export function MultiSelectIngredients({
     onChange(selected.filter((i) => i.id !== id));
   };
 
+  const containerRef = useRef<HTMLDivElement>(null);
+
   return (
-    <div className="relative">
+    <div className="relative"
+      ref={containerRef}
+      onBlur={(e) => {
+        if (!containerRef.current?.contains(e.relatedTarget as Node)) {
+          setTimeout(() => setIsOpen(false),200);
+        }
+      }}>
       <div
         className={[
           "flex flex-wrap gap-1.5 items-center min-h-[46px] px-2.5 py-1.5 bg-white border rounded-md cursor-text transition-colors",
@@ -90,12 +98,13 @@ export function MultiSelectIngredients({
               ing.isCustom ? "bg-[#2E8B6E]" : "bg-[#9B1255]",
             ].join(" ")}
           >
-            {ing.name}
             {ing.isCustom && (
               <span className="text-[10px] bg-white/25 px-1 py-px rounded tracking-wide">
-                nuevo
+                {ing.cantidad + " " + ing.unidadMedida + " de "}
               </span>
             )}
+            {ing.name}
+
             <button
               type="button"
               className="opacity-70 hover:opacity-100 text-base leading-none ml-0.5 bg-transparent border-0 text-white cursor-pointer p-0"
@@ -118,7 +127,6 @@ export function MultiSelectIngredients({
             setIsOpen(true);
           }}
           onFocus={() => setIsOpen(true)}
-          onBlur={() => setTimeout(() => setIsOpen(false), 150)}
         />
       </div>
 
@@ -128,11 +136,30 @@ export function MultiSelectIngredients({
             <div
               key={ing.id}
               className="flex items-center gap-2 justify-between px-3.5 py-2 text-sm font-sans cursor-pointer hover:bg-[#9B1255]/5 transition-colors text-gray-700"
-              onMouseDown={() => handleSelect(ing)}
+              onClick={(e) =>{ if ((e.target as HTMLElement).tagName !== "INPUT") {handleSelect(ing)}}}
             >
               <div className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#9B1255]/20 shrink-0" />
                 <span>{ing.name}</span>
+                <input
+                  type="number"
+                  min="0"
+                  value={ing.cantidad || ""}
+                  className="w-16 text-black rounded px-1"
+                  onMouseDown={(e) => e.stopPropagation()}
+                  onClick={(e) => e.stopPropagation()}
+                  onFocus={(e) => e.stopPropagation()}
+                  onChange={(e) => {
+                     setAllIngredients((prev) => prev.map((item) =>
+                      item.id === ing.id
+                        ? {
+                          ...item,
+                          cantidad: Number(e.target.value),
+                        }
+                        : item
+                    ));
+                  }}
+                />
               </div>
 
               <span className="text-xs text-gray-500">
