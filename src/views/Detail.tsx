@@ -1,9 +1,9 @@
-import { IRecetData, IRecetSaved } from "@/models/recet";
+import { INutrition, IRecetData, IRecetSaved } from "@/models/recet";
 import { data as recetData } from "@/data/recet"
 import { useEffect, useState } from "react";
 import { BookmarkBtn, Ingredients, NutritionalData, Stars, Stats, Steps } from "@/components/detail";
 import { useLocation, useParams} from "react-router-dom";
-import { getRating } from "@/services/rating";
+import { getRating, getRatingsDetail } from "@/services/rating";
 import { getSavedRecipeByIdUser } from "@/services/recipes";
 
 function Detail() {
@@ -11,6 +11,7 @@ function Detail() {
   const [data, setData] = useState<IRecetData>(recetData);
   const [recipeSaved, setRecipeSaved] = useState<IRecetSaved>();
   const [rating, setRating] = useState<number>(0);
+  const [ratingsDetail , setRatingDetails] = useState<INutrition[]>([]);
   const [bookmarked, setBookmarked] = useState(false);
   const location = useLocation();
   const recipe = location.state?.recipe;
@@ -45,6 +46,22 @@ function Detail() {
   },[recipe])
 
   useEffect(() => {
+    const getRatingDetails = async () => {
+      const rate = await getRatingsDetail(idNumber);
+      console.log("calificaciones", rate);
+      setRatingDetails( rate.map((item:any) =>(
+        {
+          value: item.rating,
+          description: item.comentarios,
+          imageUser : item.usuario.imagen,
+          userName: item.usuario.nombreUsuario
+        }
+      )))
+    }
+    getRatingDetails()
+  }, [recipe])
+
+  useEffect(() => {
     const setRecipe = async () =>{
     if (recipe)  
       await setData(
@@ -53,7 +70,7 @@ function Detail() {
           description: recipe?.description ? recipe?.description : recetData.description,
           rating: rating ? rating : 0,
           stats: recetData.stats,
-          nutritionalData: recetData.nutritionalData,
+          nutritionalData: ratingsDetail? ratingsDetail : recetData.nutritionalData,
           steps: recipe?.description
             ? recipe.description
               .split(/\r?\n|\.\s+/)
@@ -68,7 +85,7 @@ function Detail() {
     console.log("prototipo",recipe);
     }
     setRecipe()
-  }, [recipe,rating])
+  }, [recipe,rating,ratingsDetail])
 
   useEffect(() => {
       const setRecipeToSave = async () =>{
@@ -95,7 +112,7 @@ function Detail() {
           </div>
           <p className="text-sm lg:text-md text-subtitle_text">{data.description}</p>
           <Stars rating={data.rating} />
-          <Stats stats={data.stats}/>
+          {/* <Stats stats={data.stats}/> */}
         </div>
       </div>
 

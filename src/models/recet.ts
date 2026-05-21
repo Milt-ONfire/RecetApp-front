@@ -6,6 +6,8 @@ export interface IStats {
 export interface INutrition {
   value: number;
   description: string;
+  imageUser: string;
+  userName: string;
 }
 
 export interface IRecetData {
