@@ -61,7 +61,7 @@ export default function RecipeForm({
 
     form.ingredients.forEach((i, index) => {
       formData.append(`Ingredientes[${index}].NombreIngrediente`, i.name);
-      formData.append(`Ingredientes[${index}].Cantidad`, "1");
+      formData.append(`Ingredientes[${index}].Cantidad`, String(i.cantidad));
       formData.append(`Ingredientes[${index}].UnidadMedida`, String(i.unidadMedida));
     });
 

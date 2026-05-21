@@ -1,3 +1,5 @@
+import { User } from "./models"
+
 export type Recipe = {
   id?: number,
   title: string,
@@ -80,6 +82,15 @@ export interface RecipeImage {
   id: string;
   url: string;
   file: File;
+}
+
+export interface GetRating {
+  idCalificacion: number,
+  idReceta: number,
+  usuario: User,
+  rating: number,
+  fechaCalificacion: String,
+  comentarios: String
 }
  
  
